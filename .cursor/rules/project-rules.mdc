@@ -1,0 +1,83 @@
+🧾 Manzax Website – Project Rules
+This document outlines the working rules for building the official website of Manzax (the company, not the product). It helps ensure that we ship a website that's clean, fast, maintainable, and true to our values as a team.
+
+🧭 General Principles
+Intentional minimalism: Every page, component, and dependency must justify its existence.
+
+Clarity over cleverness: Prioritize clean design, simple copy, and intuitive structure.
+
+Performance first: Optimize load times, bundle size, and resource usage.
+
+Mobile-first: The site must look great and work seamlessly on mobile devices.
+
+Future-proof: Don’t hardcode local assumptions (like currency or language). Build with international potential.
+
+Built to last: Use technologies and patterns we’d still pick 3 years from now.
+
+🛠 Tech & Code Conventions
+Framework: React.
+
+Package manager: npm only (no yarn or pnpm).
+
+Node version: Locked via .nvmrc. Always use nvm use.
+
+Styling: Use React Bootstrap components for layout and UI. Avoid custom CSS unless necessary.
+
+Icons: Use lucide-react. Keep it consistent and lightweight.
+
+Type safety: TypeScript is mandatory. No any, @ts-ignore, or implicit types.
+
+Linting & formatting:
+
+ESLint with @typescript-eslint and react-hooks rules.
+
+Prettier for formatting.
+
+Enforce via husky + lint-staged on commits.
+
+⚙️ Tooling
+Editor: Recommended setup is Cursor with Copilot Chat and Prettier plugin enabled.
+
+AI Usage: You can use Cursor AI to generate or refactor code, but always review and simplify results.
+
+Testing:
+
+Use Jest with React Testing Library for unit and integration tests.
+
+Write tests for any logic or UI that has business value or failure risk.
+
+No Lighthouse audits or visual regression tests required for now.
+
+Hosting: Railway.
+
+📄 Content & Voice
+Tone: Friendly, clear, and professional — never corporate or stiff.
+
+Language: Spanish (neutral tone). Avoid local slang or overly technical terms.
+
+Branding: Follow the brand palette, typography, and logo guidelines. Always provide light/dark versions for assets.
+
+🌿 Git & Collaboration
+main must always be deployable.
+
+Use feature branches named feature/xyz.
+
+Use conventional commits (feat:, fix:, chore:).
+
+Avoid git push --force on shared branches.
+
+Code review is required — even for your own PRs (ask another founder).
+
+✅ Manual Checklist Before Merging to main
+ Looks good on mobile and desktop
+
+ All text reviewed for tone and clarity
+
+ No broken links or missing alt text
+
+ Tests are passing (npm test)
+
+ .env.example is up to date (if applicable)
+
+🧠 Philosophy
+We are four friends building something we’re proud of. We don’t cut corners — we build with care and craft. The site is simple, but every detail matters.

@@ -36,6 +36,15 @@ export default [
     },
   },
   {
+    // Mocks de Jest y configs en CommonJS — globals de Node (module, require, …).
+    files: ['__mocks__/**/*.{js,cjs}', '*.config.{js,cjs}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
     ignores: ['dist/**', 'node_modules/**'],
   },
 ];

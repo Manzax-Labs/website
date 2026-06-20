@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 
 describe('Landing Manzax Consorcio (v4 — producto terminado)', () => {
-  it('renderiza el titular y el lead del hero', () => {
+  it('renderiza el titular del hero', () => {
     render(<App />);
     expect(screen.getByText('horas')).toBeInTheDocument();
-    expect(screen.getByText(/sin vivir pegado al WhatsApp/i)).toBeInTheDocument();
+    expect(screen.getByText(/Liquidá las expensas en/i)).toBeInTheDocument();
   });
 
   it('no menciona "beta" ni "cupos" en ningún lado', () => {

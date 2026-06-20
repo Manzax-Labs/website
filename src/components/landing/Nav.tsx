@@ -16,6 +16,15 @@ const SECTION_IDS = ['producto', 'hoy', 'migracion', 'precio', 'faq'];
 
 export default function Nav() {
   const [active, setActive] = useState('');
+  const [scrolled, setScrolled] = useState(false);
+
+  // nav transparente sobre la imagen del hero → sólido al scrollear (estilo Calm)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // resalta el link de la sección visible al scrollear (mismo criterio que el diseño original)
   useEffect(() => {
@@ -35,7 +44,7 @@ export default function Nav() {
   }, []);
 
   return (
-    <header className="nav">
+    <header className={`nav${scrolled ? ' scrolled' : ''}`}>
       <div className="container nav-row">
         <a href="#producto" className="brand" aria-label="Manzax Consorcio — inicio">
           <BrandLogo size={12} />

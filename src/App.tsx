@@ -1,27 +1,36 @@
 import Nav from '@/components/landing/Nav';
 import Hero from '@/components/landing/Hero';
 import TrustStrip from '@/components/landing/TrustStrip';
+import Problem from '@/components/landing/Problem';
+import Pillars from '@/components/landing/Pillars';
 import Features from '@/components/landing/Features';
-import WhyManzax from '@/components/landing/WhyManzax';
-import Testimonial from '@/components/landing/Testimonial';
+import Steps from '@/components/landing/Steps';
+import Migration from '@/components/landing/Migration';
+import Principles from '@/components/landing/Principles';
 import Pricing from '@/components/landing/Pricing';
-import Suite from '@/components/landing/Suite';
-import CtaFinal from '@/components/landing/CtaFinal';
+import Faq from '@/components/landing/Faq';
+import Signup from '@/components/landing/Signup';
 import Footer from '@/components/landing/Footer';
+import useScrollReveal from '@/hooks/useScrollReveal';
 
 export default function App() {
+  useScrollReveal();
+
   return (
     <>
       <Nav />
-      <main>
+      <main id="top">
         <Hero />
         <TrustStrip />
+        <Problem />
+        <Pillars />
         <Features />
-        <WhyManzax />
-        <Testimonial />
+        <Steps />
+        <Migration />
+        <Principles />
         <Pricing />
-        <Suite />
-        <CtaFinal />
+        <Faq />
+        <Signup />
       </main>
       <Footer />
     </>

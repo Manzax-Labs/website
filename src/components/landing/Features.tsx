@@ -1,109 +1,53 @@
-import type { ReactNode } from 'react';
-import Section from './Section';
+import { IconCheck } from './Icons';
 
-const ico = {
-  width: 18,
-  height: 18,
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 2,
-  'aria-hidden': true,
-};
-
-const features: { icon: ReactNode; title: string; desc: string }[] = [
+const features: { title: string; desc: string }[] = [
   {
-    icon: (
-      <svg {...ico}>
-        <path d="M3 3h18v4H3zM3 11h18v10H3z" />
-        <path d="M7 15h6" />
-      </svg>
-    ),
-    title: 'Liquidación guiada',
-    desc: 'Wizard de 4 pasos para cerrar el mes. Coeficientes y prorrateos automáticos. PDF y email a los propietarios al final.',
+    title: 'Liquidación y prorrateo por coeficiente',
+    desc: 'El corazón del sistema. Cargás los gastos, prorratea por coeficiente y arma el PDF de cada unidad.',
   },
   {
-    icon: (
-      <svg {...ico}>
-        <rect x="3" y="6" width="18" height="13" rx="2" />
-        <path d="M3 10h18M7 15h4" />
-      </svg>
-    ),
-    title: 'Cobranzas con intereses',
-    desc: 'Moras y descuentos por pago anticipado, calculados solos. Sin fórmulas en Excel ni discusiones por mensaje.',
+    title: 'Portal de propietarios e inquilinos',
+    desc: 'Expensas y comprobantes, por mail o WhatsApp. El vecino no instala nada.',
   },
   {
-    icon: (
-      <svg {...ico}>
-        <circle cx="9" cy="7" r="4" />
-        <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
-        <circle cx="17" cy="7" r="3" />
-      </svg>
-    ),
-    title: 'Portales para vecinos e inquilinos',
-    desc: 'Cada UF tiene su acceso propio. Inquilinos también — donde nadie más se los da. Un reclamo menos para vos.',
+    title: 'Conciliación bancaria en un click',
+    desc: 'Cruzás los movimientos del banco con la liquidación al instante. Se acabó el control a mano.',
   },
   {
-    icon: (
-      <svg {...ico}>
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-      </svg>
-    ),
-    title: 'Tu primer mes con IA',
-    desc: 'Subís tu última liquidación en PDF y leemos las unidades, coeficientes y proveedores. Empezás sin cargar nada a mano.',
+    title: 'Recibo del encargado, prorrateado',
+    desc: 'Subís el recibo del encargado y lo incorporamos a la liquidación del mes, sin recargarlo a mano.',
   },
   {
-    icon: (
-      <svg {...ico}>
-        <path d="M3 3h18v18H3z" />
-        <path d="M3 9h18M9 21V9" />
-      </svg>
-    ),
-    title: 'Multi-edificio',
-    desc: 'Un solo login, todos tus consorcios. Saltás de un edificio a otro sin perder el contexto ni los filtros.',
+    title: 'Importación de comprobantes™',
+    desc: 'Nuestro sistema propio carga los comprobantes sin tipear: hasta 5 horas menos por edificio al mes.',
   },
   {
-    icon: (
-      <svg {...ico}>
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 6v6l4 2" />
-      </svg>
-    ),
-    title: 'Auditoría completa',
-    desc: 'Cada movimiento queda registrado. Si un propietario reclama, en 30 segundos sabés qué se pagó, cuándo y por qué.',
+    title: 'Facturación electrónica AFIP/ARCA',
+    desc: 'Emitís los comprobantes electrónicos de las expensas y las cargas sociales del encargado (F.931).',
   },
 ];
 
 export default function Features() {
   return (
-    <Section className="block" id="features">
+    <section className="block alt" id="hoy" aria-labelledby="hoy-h">
       <div className="container">
-        <div className="features-head">
-          <div>
-            <div className="eyebrow">Lo que hace por vos</div>
-            <h2 className="section-title">
-              Lo aburrido del consorcio,
-              <br />
-              resuelto.
-            </h2>
-          </div>
-          <p className="section-lede">
-            Pocas funciones, hechas bien. No es un ERP que hace 800 cosas mal: es un software para administrar
-            consorcios, pensado por gente que entendió cómo funciona un edificio en Argentina después de hablar
-            con 65+ administradores.
-          </p>
+        <div className="sec-head center">
+          <div className="eyebrow center">Funciones</div>
+          <h2 id="hoy-h">Todo lo que necesitás, en un solo lugar</h2>
+          <p>De la liquidación al portal del vecino: una sola herramienta para todo el mes.</p>
         </div>
-
-        <div className="features-grid">
+        <div className="rl stagger">
           {features.map((f) => (
-            <div className="feature" key={f.title}>
-              <div className="ico">{f.icon}</div>
-              <h4>{f.title}</h4>
-              <p>{f.desc}</p>
+            <div className="ri done reveal" key={f.title}>
+              <IconCheck />
+              <div>
+                <b>{f.title}</b>
+                <span>{f.desc}</span>
+              </div>
             </div>
           ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

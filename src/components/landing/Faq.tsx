@@ -48,28 +48,34 @@ export default function Faq() {
         <div className="faq stagger">
           {faqs.map(([q, a], i) => {
             const isOpen = open === i;
+            // El .reveal va en un wrapper de className FIJO: el scroll-reveal le agrega `.in` por
+            // DOM (fuera de React). Si lo pusiéramos en el mismo nodo que cambia `open`, React
+            // reescribiría el className al re-renderizar y borraría `.in` → la pregunta volvería a
+            // opacity:0 y "desaparecería" al tocar el +. Con className constante, React no lo pisa.
             return (
-              <div className={`qa reveal${isOpen ? ' open' : ''}`} key={i}>
-                <button
-                  type="button"
-                  id={`q${i}`}
-                  aria-expanded={isOpen}
-                  aria-controls={`a${i}`}
-                  onClick={() => setOpen(isOpen ? null : i)}
-                >
-                  {q}
-                  <svg viewBox="0 0 24 24" className="icn pm" aria-hidden="true">
-                    <path d="M12 5v14M5 12h14" />
-                  </svg>
-                </button>
-                <div
-                  className="ans"
-                  id={`a${i}`}
-                  role="region"
-                  aria-labelledby={`q${i}`}
-                  aria-hidden={!isOpen}
-                >
-                  <p>{a}</p>
+              <div className="reveal" key={i}>
+                <div className={isOpen ? 'qa open' : 'qa'}>
+                  <button
+                    type="button"
+                    id={`q${i}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`a${i}`}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                  >
+                    {q}
+                    <svg viewBox="0 0 24 24" className="icn pm" aria-hidden="true">
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
+                  </button>
+                  <div
+                    className="ans"
+                    id={`a${i}`}
+                    role="region"
+                    aria-labelledby={`q${i}`}
+                    aria-hidden={!isOpen}
+                  >
+                    <p>{a}</p>
+                  </div>
                 </div>
               </div>
             );

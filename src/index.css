@@ -679,6 +679,11 @@ section.block {
   padding: 58px 0 0; /* espacio para el header arriba; el collage se funde en crema abajo */
   /* fondo normal (crema): apenas terminan las cards, vuelve a crema enseguida — como Calm */
   background: var(--bg);
+  margin-bottom: -48px; /* come el fade vacío de abajo → menos aire antes de la sección siguiente */
+}
+/* la sección que sigue a la tira arranca más cerca (menos padding-top) */
+.problem-collage + .block {
+  padding-top: 52px;
 }
 /* header de la sección (sobre crema → texto oscuro, no el blanco del panel viejo) */
 .collage-head {
@@ -831,76 +836,262 @@ section.block {
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* hover lifts on the de-boxed icon sections */
-.pain .ci,
-.pillar .ci {
+/* hover lift on the de-boxed pain icons */
+.pain .ci {
   transition: transform 0.3s var(--ease-spring);
 }
-.pain:hover .ci,
-.pillar:hover .ci {
+.pain:hover .ci {
   transform: scale(1.08) translateY(-2px);
 }
-.pillar .micro .icn {
-  transition: transform 0.25s var(--ease);
-}
-.pillar .micro:hover .icn {
-  transform: translateX(3px);
-}
 
-/* pillars — open columns (no boxes), big custom brand icons */
-.pillars {
+/* ── "Tres cosas que cambian" — columnas ABIERTAS (sin cajas), divisores finos.
+   La primera (tiempo) es la héroe: más ancha, con una mini barra que dramatiza
+   2 días → una tarde y un número grande. Las otras dos cuentan el antes→ahora
+   en texto: el dolor de siempre TACHADO → el alivio en grande. */
+.pgrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1.2fr 1fr 1fr;
   gap: 0;
+  align-items: stretch; /* columnas a igual altura → los divisores finos son continuos */
 }
-.pillar {
-  padding: 4px 38px;
+.pcard {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 42px;
 }
-.pillar + .pillar {
+.pcard:first-child {
+  padding-left: 0;
+}
+.pcard:last-child {
+  padding-right: 0;
+}
+.pcard + .pcard {
   border-left: 1px solid var(--line);
 }
-.pillar .ci {
-  width: 58px;
-  height: 58px;
+.pcard .ci {
+  width: 52px;
+  height: 52px;
   color: var(--teal-deep);
-  margin-bottom: 22px;
+  margin-bottom: 20px;
+  transition: transform 0.3s var(--ease-spring);
 }
-.pillar h3 {
+.pcard:hover .ci {
+  transform: scale(1.07) translateY(-2px);
+}
+.pc-eyebrow {
   font-family: 'Manrope';
   font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal-mid);
+  margin-bottom: 16px;
+}
+/* el "antes": el dolor de siempre, tachado */
+.pc-was {
+  display: block;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-color: rgba(86, 97, 89, 0.42);
+  text-decoration-thickness: 1.5px;
+  opacity: 0.82;
+  margin-bottom: 12px;
+}
+/* mini barra comparativa de la héroe: dramatiza 2 días → una tarde, sin caja */
+.pc-bars {
+  display: grid;
+  gap: 12px;
+  margin: 2px 0 22px;
+  max-width: 380px;
+}
+.pc-bar {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 13px;
+}
+.pc-bar .bl {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.07em;
   color: var(--muted);
-  margin-bottom: 7px;
 }
-.pillar .big {
-  font-family: 'Manrope';
-  font-weight: 800;
-  font-size: 26px;
+.pc-bar .track {
+  height: 13px;
+  border-radius: 999px;
+  background: rgba(15, 76, 63, 0.06);
+  overflow: hidden;
+}
+.pc-bar .fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.95s var(--ease);
+}
+.pc-bar.antes .fill {
+  width: 100%;
+  background: rgba(86, 97, 89, 0.28);
+}
+.pc-bar.ahora .fill {
+  width: 22%;
+  background: linear-gradient(90deg, var(--teal-mid), var(--teal));
+}
+/* las barras crecen de 0 al entrar en viewport: primero el gris (2 días),
+   después el teal (una tarde) → el ojo "ve" el ahorro suceder */
+.js .pcard:not(.in) .pc-bar .fill {
+  width: 0;
+}
+.pcard.in .pc-bar.ahora .fill {
+  transition-delay: 0.4s;
+}
+/* card "transparencia": a quién le llega — propietarios + inquilinos (abierto) */
+.pc-reach {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 20px;
+  margin: 0 0 15px;
+}
+.pc-reach .rd {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
   color: var(--teal-deep);
-  margin: 0 0 12px;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
 }
-.pillar p {
-  font-size: 15.5px;
+.pc-reach .rd::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal-mid);
+}
+/* card "arranque sin trauma": mini timeline de 2 pasos (abierto) */
+.pc-steps {
+  display: grid;
+  gap: 11px;
+  margin: 0 0 15px;
+}
+.pc-steps .ps {
+  position: relative;
+  padding-left: 19px;
+  font-size: 13.5px;
+  line-height: 1.3;
   color: var(--muted);
-  line-height: 1.6;
 }
-.pillar .micro {
+.pc-steps .ps::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--teal-mid);
+}
+.pc-steps .ps:first-child::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 13px;
+  width: 1px;
+  height: 13px;
+  background: var(--line);
+  transform-origin: top;
+  transition: transform 0.4s var(--ease) 0.22s;
+}
+.pc-steps .ps b {
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+/* ── choreografía de entrada: los visuales de cada columna se animan al revelarse
+   (sólo con JS; sin JS quedan visibles). Las barras ya crecen; acá suman los
+   puntos (pop) y el mini-timeline (se dibuja la línea + entran los pasos). */
+.pc-reach .rd {
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease-spring);
+}
+.js .pcard:not(.in) .pc-reach .rd {
+  opacity: 0;
+  transform: translateY(7px) scale(0.92);
+}
+.pcard.in .pc-reach .rd:nth-child(2) {
+  transition-delay: 0.13s;
+}
+.pc-steps .ps {
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.js .pcard:not(.in) .pc-steps .ps {
+  opacity: 0;
+  transform: translateX(-7px);
+}
+.pcard.in .pc-steps .ps:nth-child(2) {
+  transition-delay: 0.17s;
+}
+.js .pcard:not(.in) .pc-steps .ps:first-child::after {
+  transform: scaleY(0);
+}
+/* respetar reduced-motion: todo el set aparece en su estado final, sin animar */
+@media (prefers-reduced-motion: reduce) {
+  .pc-bar .fill,
+  .pc-reach .rd,
+  .pc-steps .ps,
+  .pc-steps .ps:first-child::after {
+    transition: none;
+  }
+  .js .pcard:not(.in) .pc-bar.antes .fill {
+    width: 100%;
+  }
+  .js .pcard:not(.in) .pc-bar.ahora .fill {
+    width: 22%;
+  }
+  .js .pcard:not(.in) .pc-reach .rd,
+  .js .pcard:not(.in) .pc-steps .ps {
+    opacity: 1;
+    transform: none;
+  }
+  .js .pcard:not(.in) .pc-steps .ps:first-child::after {
+    transform: scaleY(1);
+  }
+}
+.pc-bar .val {
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--teal-deep);
+}
+.pc-bar.antes .val {
+  color: var(--muted);
+}
+.pcard p.pc-body {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.58;
+  margin: 0;
+}
+.pcard-lead p.pc-body {
+  font-size: 16px;
+  max-width: 34ch;
+}
+.pcard .micro {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
-  padding: 6px 0;
+  margin-top: 16px;
   font-size: 13.5px;
   font-weight: 600;
   color: var(--teal-mid);
 }
-.pillar .micro .icn {
+.pcard .micro .icn {
   width: 15px;
   height: 15px;
+  transition: transform 0.25s var(--ease);
+}
+.pcard .micro:hover .icn {
+  transform: translateX(3px);
 }
 
 /* funciones — two-column checklist */
@@ -1738,7 +1929,7 @@ footer .flink:hover {
     font-size: 20px;
   }
   .pain-grid,
-  .pillars,
+  .pgrid,
   .steps,
   .rl,
   .pr-grid,
@@ -1807,18 +1998,27 @@ footer .flink:hover {
   .signup-card {
     padding: 36px 24px 150px;
   }
-  /* de-boxed sections: dividers go horizontal when stacked */
-  .pain,
-  .pillar {
+  /* de-boxed pain section: divider goes horizontal when stacked */
+  .pain {
     padding: 26px 0 6px;
   }
   .pain + .pain {
     border-left: none;
     border-top: 1px solid rgba(255, 255, 255, 0.13);
   }
-  .pillar + .pillar {
+  /* pillars apilados: columnas abiertas → el divisor pasa de vertical a horizontal */
+  .pcard {
+    padding: 28px 0 4px;
+  }
+  .pcard:first-child {
+    padding-top: 4px;
+  }
+  .pcard + .pcard {
     border-left: none;
     border-top: 1px solid var(--line);
+  }
+  .pc-bars {
+    max-width: 100%;
   }
   .hero-shot {
     margin-top: 8px;

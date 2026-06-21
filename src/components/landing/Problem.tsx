@@ -114,9 +114,45 @@ export default function Problem() {
     update();
     const raf = requestAnimationFrame(update);
     window.addEventListener('resize', update);
+
+    // --- solo mobile: arrancar centrado + un empujoncito sutil al entrar en vista (sin texto) ---
+    const isMobile = window.matchMedia('(max-width: 900px)').matches;
+    let io: IntersectionObserver | null = null;
+    let nudgeT = 0;
+    let interacted = false;
+    const center = () => {
+      collage.scrollLeft = (collage.scrollWidth - collage.clientWidth) / 2;
+    };
+    const onTouch = () => {
+      interacted = true;
+    };
+    if (isMobile) {
+      requestAnimationFrame(center);
+      collage.addEventListener('touchstart', onTouch, { passive: true });
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && !interacted) {
+            center();
+            const base = collage.scrollLeft;
+            collage.scrollTo({ left: base + 38, behavior: 'smooth' }); // empujoncito → "se mueve"
+            nudgeT = window.setTimeout(
+              () => collage.scrollTo({ left: base, behavior: 'smooth' }),
+              620
+            );
+            io?.disconnect();
+          }
+        },
+        { threshold: 0.55 }
+      );
+      io.observe(collage);
+    }
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', update);
+      io?.disconnect();
+      collage.removeEventListener('touchstart', onTouch);
+      if (nudgeT) clearTimeout(nudgeT);
     };
   }, []);
 
@@ -128,8 +164,9 @@ export default function Problem() {
           <p>Lo bueno, lo tedioso y lo de las 11 de la noche. Manzax está hecho para todo esto.</p>
         </div>
       </div>
-      <div className="collage" aria-hidden="true" ref={collageRef}>
-        <div className="collage-plane">
+      <div className="collage-wrap">
+        <div className="collage" aria-hidden="true" ref={collageRef}>
+          <div className="collage-plane">
           {grid.map((col, ci) => (
             <div className="collage-col" key={ci}>
               {col.map((slug, ri) => (
@@ -151,6 +188,7 @@ export default function Problem() {
           ))}
         </div>
       </div>
+    </div>
     </section>
   );
 }

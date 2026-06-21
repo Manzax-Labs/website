@@ -710,6 +710,9 @@ section.block {
 .problem-collage::before {
   display: none;
 }
+.collage-wrap {
+  position: relative; /* contexto para el hint de swipe (mobile) */
+}
 .collage {
   position: relative;
   z-index: 1;

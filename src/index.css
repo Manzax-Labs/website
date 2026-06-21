@@ -673,88 +673,134 @@ section.block {
   font-weight: 700;
 }
 
-/* barra de ilustraciones (estilo cómic) — sobre el fondo del panel, con un semi-fondo suave */
-.illus-bar {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin-top: 8px;
-  align-items: start; /* top-align: imágenes y captions arrancan a la misma altura (subs de distinto largo no mueven las imágenes) */
-}
-.illus-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-}
-/* semi-fondo: halo de color suave detrás de cada ilustración (la "asienta" sin card dura) */
-.illus-item::before {
-  content: '';
+.sr-only {
   position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 0;
-  height: 82%;
-  background: radial-gradient(ellipse at 50% 55%, rgba(159, 225, 203, 0.18), transparent 68%);
-  z-index: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
-.illus-item img {
+
+/* collage estilo Calm: grilla inclinada (3D) de foto-cards verticales, full-bleed, que se
+   funde arriba/abajo con el fondo crema de la página */
+.problem-collage {
+  padding: 0;
+  /* fondo normal (crema): apenas terminan las cards, vuelve a crema enseguida — como Calm */
+  background: var(--bg);
+}
+/* sin dot-grid en esta variante: las cards van directo sobre el fondo crema */
+.problem-collage::before {
+  display: none;
+}
+.collage {
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 150px;
-  object-fit: contain;
-  object-position: center bottom;
-  transition: transform 0.32s var(--ease-spring);
+  height: 580px;
+  overflow: hidden;
+  /* el difuminado LLEGA a las cards: se desvanecen ellas (siguiendo el escalonado → borde ondulado,
+     no recto) y vuelven al crema enseguida. Fade corto para que no quede mucha franja difuminada */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 1%, #000 11%, #000 89%, transparent 99%);
+  mask-image: linear-gradient(to bottom, transparent 1%, #000 11%, #000 89%, transparent 99%);
 }
-.illus-item:hover img {
-  transform: translateY(-5px) scale(1.03);
+.collage-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: 24px;
+  /* grilla plana (cards del mismo tamaño, sin perspectiva — como Calm), inclinada hacia la derecha.
+     Escala grande → cubren todo el alto del panel y sangran a los costados */
+  transform: translate(-50%, -50%) rotate(7deg) scale(1.22);
+  transform-origin: center center;
+  will-change: transform;
 }
-.illus-item figcaption {
-  position: relative;
-  z-index: 1;
-  margin-top: 14px;
+.collage-col {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 24px;
+  flex: 0 0 auto;
+  width: 150px;
+}
+.collage-col:nth-child(even) {
+  margin-top: 54px; /* stagger entre columnas */
+}
+.cg-card {
+  position: relative;
+  margin: 0;
+  width: 150px;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  /* sombrita en dos capas: una cercana que define el borde + una difusa que da elevación */
+  box-shadow: 0 2px 6px rgba(16, 42, 35, 0.12), 0 16px 32px rgba(16, 42, 35, 0.22);
+}
+.cg-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease-spring);
+}
+/* hover: zoom sutil de la foto */
+.cg-card:hover img {
+  transform: scale(1.05);
+}
+/* scrim + texto: ocultos por defecto, aparecen SOLO al hover */
+.cg-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(4, 16, 12, 0.94) 0%,
+    rgba(4, 16, 12, 0.55) 30%,
+    rgba(4, 16, 12, 0.08) 60%,
+    transparent 78%
+  );
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+.cg-card figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 13px 14px;
   text-align: center;
-}
-.illus-num {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: 'Manrope';
-  font-weight: 800;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--teal-light);
-  opacity: 0.62;
-  margin-bottom: 8px;
-}
-/* línea-guía corta a cada lado del número → lee como índice de "tira" de cómic */
-.illus-num::before,
-.illus-num::after {
-  content: '';
-  width: 12px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.5;
-}
-.illus-cap {
-  font-family: 'Manrope';
-  font-weight: 700;
-  font-size: 14.5px;
-  letter-spacing: -0.01em;
   color: #fff;
-  line-height: 1.25;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s var(--ease), transform 0.4s var(--ease-spring);
 }
-.illus-sub {
-  margin-top: 6px;
-  max-width: 21ch;
+.cg-card:hover .cg-scrim,
+.cg-card:hover figcaption {
+  opacity: 1;
+  transform: none;
+}
+.cg-cap {
+  display: block;
+  font-family: 'Manrope';
+  font-weight: 600;
   font-size: 12.5px;
-  line-height: 1.42;
-  color: rgba(159, 225, 203, 0.78);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+.cg-sub {
+  display: block;
+  margin-top: 4px;
+  font-family: 'Manrope';
+  font-weight: 400;
+  font-size: 10.5px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.86);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 /* hover lifts on the de-boxed icon sections */
@@ -1749,24 +1795,23 @@ footer .flink:hover {
   .hero-shot {
     margin-top: 8px;
   }
-  /* barra de ilustraciones → carrusel horizontal con snap en mobile */
-  .illus-bar {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: 72%;
-    gap: 14px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    margin: 0 -24px;
-    padding: 0 24px 6px;
+  /* collage en mobile: cards más chicas (se ven varias), misma grilla plana inclinada a la derecha */
+  .collage {
+    height: 420px;
   }
-  .illus-bar::-webkit-scrollbar {
-    display: none;
+  .collage-plane {
+    gap: 16px;
+    transform: translate(-50%, -50%) rotate(7deg) scale(1.12);
   }
-  .illus-item {
-    scroll-snap-align: center;
+  .collage-col {
+    gap: 16px;
+    width: 120px;
+  }
+  .collage-col:nth-child(even) {
+    margin-top: 42px;
+  }
+  .cg-card {
+    width: 120px;
   }
 }
 /* pantallas muy chicas (iPhone SE 1ª gen / 320px): comprimir un toque más el hero

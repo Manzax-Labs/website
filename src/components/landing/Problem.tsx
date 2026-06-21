@@ -52,18 +52,20 @@ const CAP: Record<string, { cap: string; sub: string }> = {
   'encargado-paquete': { cap: 'Firma por todos', sub: 'Recibe el paquete que vos no llegaste a buscar' },
 };
 
-// Centralidad: tier1 = administradores (personas) → al centro · tier2 = otras personas (vecinos,
-// encargado) → anillo medio · tier3 = ciudad/edificios/amenities sin personas → bordes
-const tier1 = ['whatsapp', 'liquidacion-cerrada', 'conciliacion', 'todo-cuadra', 'sistema', 'expensas-enviadas', 'libros', 'cierre', 'reclamos', 'trato-cerrado'];
-const tier2 = ['reunion-consorcio', 'encargado-orgulloso', 'vecinos-contentos', 'vecinos', 'encargado-limpiando', 'encargado-jardin', 'encargado-paquete', 'encargado-bronces', 'encargado-basura', 'mantenimiento'];
-const buildings = ['edificio', 'art-deco', 'ph-reciclado', 'torre-vidrio', 'skyline', 'calle-palermo', 'hall-entrada', 'ascensor', 'contrapicado', 'barrio-aereo', 'balcones-plantas', 'edificio-noche'];
-const amenities = ['pileta', 'sum', 'gimnasio', 'terraza', 'quincho', 'cochera', 'patio-interno', 'laundry', 'country', 'paddle', 'coworking', 'rooftop'];
-const tier3: string[] = [];
-for (let i = 0; i < 12; i++) {
-  tier3.push(buildings[i]);
-  tier3.push(amenities[i]);
-}
-const ordered = [...tier1, ...tier2, ...tier3]; // 44, en orden de prioridad central → borde
+// Orden de prioridad (Gonzi): las primeras van al centro (siempre visibles, con texto), las
+// últimas a la periferia (recortadas arriba/abajo, sin texto). Las primeras 17 las eligió él;
+// el resto, ordenadas por importancia (gente/positivas antes, textura de fondo al final).
+const ordered = [
+  'whatsapp', 'liquidacion-cerrada', 'todo-cuadra', 'conciliacion', 'libros', 'trato-cerrado',
+  'quincho', 'sistema', 'balcones-plantas', 'vecinos-contentos', 'vecinos', 'cierre',
+  'expensas-enviadas', 'reclamos', 'encargado-jardin', 'ph-reciclado', 'sum',
+  // el resto (mi criterio): gente/positivas → edificios/amenities lindos → textura de fondo
+  'reunion-consorcio', 'encargado-orgulloso', 'edificio', 'encargado-limpiando', 'pileta',
+  'skyline', 'terraza', 'hall-entrada', 'encargado-paquete', 'art-deco', 'gimnasio',
+  'encargado-basura', 'calle-palermo', 'mantenimiento', 'ascensor', 'edificio-noche',
+  'encargado-bronces', 'patio-interno', 'torre-vidrio', 'coworking', 'contrapicado',
+  'country', 'laundry', 'barrio-aereo', 'cochera', 'paddle', 'rooftop',
+]; // 44, de más central a más periférica
 
 const COLS = 11;
 const ROWS = 4;
@@ -105,6 +107,8 @@ export default function Problem() {
         const vVis = Math.max(0, Math.min(r.bottom, clearBottom) - Math.max(r.top, clearTop));
         const frac = (hVis * vVis) / (r.width * r.height);
         card.classList.toggle('cg-complete', frac >= 0.6);
+        // el texto solo si la card está ≥70% visible en ALTO (las cortadas arriba/abajo no llevan texto)
+        card.classList.toggle('cg-cap', vVis / r.height >= 0.7);
       });
     };
     update();
@@ -118,9 +122,12 @@ export default function Problem() {
 
   return (
     <section className="block problem problem-collage" aria-labelledby="prob-h">
-      <h2 id="prob-h" className="sr-only">
-        Esto lo conocés de memoria
-      </h2>
+      <div className="container collage-head">
+        <div className="sec-head center">
+          <h2 id="prob-h">Lo conocemos de memoria</h2>
+          <p>Lo bueno, lo tedioso y lo de las 11 de la noche. Manzax está hecho para todo esto.</p>
+        </div>
+      </div>
       <div className="collage" aria-hidden="true" ref={collageRef}>
         <div className="collage-plane">
           {grid.map((col, ci) => (

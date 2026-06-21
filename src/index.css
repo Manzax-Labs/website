@@ -688,9 +688,23 @@ section.block {
 /* collage estilo Calm: grilla inclinada (3D) de foto-cards verticales, full-bleed, que se
    funde arriba/abajo con el fondo crema de la página */
 .problem-collage {
-  padding: 0;
+  padding: 58px 0 0; /* espacio para el header arriba; el collage se funde en crema abajo */
   /* fondo normal (crema): apenas terminan las cards, vuelve a crema enseguida — como Calm */
   background: var(--bg);
+}
+/* header de la sección (sobre crema → texto oscuro, no el blanco del panel viejo) */
+.collage-head {
+  position: relative;
+  z-index: 3;
+}
+.problem-collage .sec-head {
+  margin-bottom: 14px;
+}
+.problem-collage h2 {
+  color: var(--teal-deep); /* mismo verde que "Tres pasos, todos los meses" */
+}
+.problem-collage .sec-head p {
+  color: var(--muted);
 }
 /* sin dot-grid en esta variante: las cards van directo sobre el fondo crema */
 .problem-collage::before {
@@ -767,6 +781,15 @@ section.block {
   text-align: center;
   color: #fff;
 }
+/* el texto (scrim + caption) SOLO si la card está ≥70% visible en alto; las cortadas arriba/abajo van sin texto */
+.cg-scrim,
+.cg-card figcaption {
+  display: none;
+}
+.cg-card.cg-cap .cg-scrim,
+.cg-card.cg-cap figcaption {
+  display: block;
+}
 /* periferia (cortadas / difuminadas): SIEMPRE en baja opacidad, sin animar */
 .cg-card {
   opacity: 0.5;
@@ -774,24 +797,26 @@ section.block {
 /* solo las cards que entran COMPLETAS en el viewport hacen el "breath" (baja <-> full),
    rotando suave (spotlight escalonado por --i). Menos abrumador y nada de texto parpadeando. */
 .cg-card.cg-complete {
-  animation: cgBreath 19s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * -0.43s);
+  animation: cgBreath 15s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.34s);
   will-change: opacity;
 }
-/* ventana "brillante" ancha (~35% del ciclo) → en todo momento ~30-40% de las que respiran
-   están en buena opacidad, escalonadas por --i. Decorativo, no interactivo. */
+/* transición rápida (fade ~0.45s) pero se queda lo mismo en cada estado (hold alto ~4.8s,
+   hold bajo ~9.3s). En todo momento ~30-40% de las que respiran están en buena opacidad. */
 @keyframes cgBreath {
-  0%,
-  100% {
+  0% {
     opacity: 0.5;
   }
-  13% {
+  3% {
+    opacity: 1;
+  }
+  35% {
     opacity: 1;
   }
   38% {
-    opacity: 1;
+    opacity: 0.5;
   }
-  52% {
+  100% {
     opacity: 0.5;
   }
 }
@@ -1807,23 +1832,41 @@ footer .flink:hover {
   .hero-shot {
     margin-top: 8px;
   }
-  /* collage en mobile: cards más chicas (se ven varias), misma grilla plana inclinada a la derecha */
+  /* collage en mobile: TIRA DESLIZABLE en horizontal (swipe para ver más fotos), manteniendo
+     el mismo stagger/alineación que en desktop (NO una grilla perfecta) */
   .collage {
-    height: 420px;
+    height: 430px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    display: flex;
+    align-items: center; /* centra TODO el plane (conserva el stagger interno entre columnas) */
+  }
+  .collage::-webkit-scrollbar {
+    display: none;
   }
   .collage-plane {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    flex: 0 0 auto; /* no encoge → mantiene su ancho natural y scrollea */
+    width: max-content;
     gap: 16px;
-    transform: translate(-50%, -50%) scale(1.12);
+    padding: 0 18px;
   }
   .collage-col {
     gap: 16px;
-    width: 120px;
+    width: 124px;
+    /* sin reset de margin-top → conserva el stagger del desktop */
   }
-  .collage-col:nth-child(even) {
-    margin-top: 42px;
-  }
+  /* en mobile respiran todas las cards (no solo las "completas", porque se deslizan) */
   .cg-card {
-    width: 120px;
+    width: 124px;
+    opacity: 0.5;
+    animation: cgBreath 15s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * -0.34s);
   }
 }
 /* pantallas muy chicas (iPhone SE 1ª gen / 320px): comprimir un toque más el hero

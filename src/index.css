@@ -713,9 +713,8 @@ section.block {
   left: 50%;
   display: flex;
   gap: 24px;
-  /* grilla plana (cards del mismo tamaño, sin perspectiva — como Calm), inclinada hacia la derecha.
-     Escala grande → cubren todo el alto del panel y sangran a los costados */
-  transform: translate(-50%, -50%) rotate(7deg) scale(1.22);
+  /* grilla derecha (sin inclinar). Escala grande → cubre todo el alto del panel y sangra a los costados */
+  transform: translate(-50%, -50%) scale(1.16);
   transform-origin: center center;
   will-change: transform;
 }
@@ -752,19 +751,17 @@ section.block {
 .cg-card:hover img {
   transform: scale(1.05);
 }
-/* scrim + texto: ocultos por defecto, aparecen SOLO al hover */
+/* scrim + texto: SIEMPRE visibles */
 .cg-scrim {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(4, 16, 12, 0.94) 0%,
-    rgba(4, 16, 12, 0.55) 30%,
-    rgba(4, 16, 12, 0.08) 60%,
-    transparent 78%
+    rgba(4, 16, 12, 0.95) 0%,
+    rgba(4, 16, 12, 0.6) 28%,
+    rgba(4, 16, 12, 0.12) 58%,
+    transparent 76%
   );
-  opacity: 0;
-  transition: opacity 0.3s var(--ease);
 }
 .cg-card figcaption {
   position: absolute;
@@ -774,14 +771,6 @@ section.block {
   padding: 12px 13px 14px;
   text-align: center;
   color: #fff;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s var(--ease), transform 0.4s var(--ease-spring);
-}
-.cg-card:hover .cg-scrim,
-.cg-card:hover figcaption {
-  opacity: 1;
-  transform: none;
 }
 .cg-cap {
   display: block;
@@ -1801,7 +1790,7 @@ footer .flink:hover {
   }
   .collage-plane {
     gap: 16px;
-    transform: translate(-50%, -50%) rotate(7deg) scale(1.12);
+    transform: translate(-50%, -50%) scale(1.12);
   }
   .collage-col {
     gap: 16px;

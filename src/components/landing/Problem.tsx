@@ -1,8 +1,7 @@
-// Sección "problema" como collage estilo Calm: grilla inclinada de 44 foto-cards distintas que se
-// funde con el fondo crema. TODAS tienen caption (título + una línea) que aparece SOLO al hover.
-// Copy investigado para que sorprenda, empatice y dé ganas de verlas todas. Mezcladas por categoría
-// (personas / edificios / amenities / encargado) para que quede diverso y colorido. Sin título
-// visible (queda como h2 sr-only para accesibilidad).
+// Sección "problema" como collage: grilla DERECHA (sin inclinar) de 44 foto-cards distintas que se
+// funde con el fondo crema. Caption por card SIEMPRE visible (título + una línea). Las fotos de
+// administradores (personas) van al CENTRO; las de ciudad/edificios/amenities sin personas, hacia
+// los bordes. Sin título visible (queda como h2 sr-only para accesibilidad).
 
 const CAP: Record<string, { cap: string; sub: string }> = {
   whatsapp: { cap: 'Las 11 de la noche', sub: 'Cuarenta mensajes nuevos y nadie pregunta si dormiste' },
@@ -51,22 +50,37 @@ const CAP: Record<string, { cap: string; sub: string }> = {
   'encargado-paquete': { cap: 'Firma por todos', sub: 'Recibe el paquete que vos no llegaste a buscar' },
 };
 
-// 4 categorías → se intercalan (round-robin) para que el collage quede diverso y colorido
-const people = ['whatsapp', 'conciliacion', 'libros', 'sistema', 'vecinos', 'reclamos', 'cierre', 'liquidacion-cerrada', 'expensas-enviadas', 'reunion-consorcio', 'todo-cuadra', 'trato-cerrado', 'encargado-orgulloso', 'vecinos-contentos'];
+// Centralidad: tier1 = administradores (personas) → al centro · tier2 = otras personas (vecinos,
+// encargado) → anillo medio · tier3 = ciudad/edificios/amenities sin personas → bordes
+const tier1 = ['whatsapp', 'liquidacion-cerrada', 'conciliacion', 'todo-cuadra', 'sistema', 'expensas-enviadas', 'libros', 'cierre', 'reclamos', 'trato-cerrado'];
+const tier2 = ['reunion-consorcio', 'encargado-orgulloso', 'vecinos-contentos', 'vecinos', 'encargado-limpiando', 'encargado-jardin', 'encargado-paquete', 'encargado-bronces', 'encargado-basura', 'mantenimiento'];
 const buildings = ['edificio', 'art-deco', 'ph-reciclado', 'torre-vidrio', 'skyline', 'calle-palermo', 'hall-entrada', 'ascensor', 'contrapicado', 'barrio-aereo', 'balcones-plantas', 'edificio-noche'];
 const amenities = ['pileta', 'sum', 'gimnasio', 'terraza', 'quincho', 'cochera', 'patio-interno', 'laundry', 'country', 'paddle', 'coworking', 'rooftop'];
-const encargado = ['encargado-limpiando', 'encargado-basura', 'encargado-bronces', 'encargado-jardin', 'mantenimiento', 'encargado-paquete'];
-
-const cats = [people, buildings, amenities, encargado];
-const order: string[] = [];
-for (let i = 0; order.length < 44; i++) {
-  for (const cat of cats) if (cat[i]) order.push(cat[i]);
+const tier3: string[] = [];
+for (let i = 0; i < 12; i++) {
+  tier3.push(buildings[i]);
+  tier3.push(amenities[i]);
 }
+const ordered = [...tier1, ...tier2, ...tier3]; // 44, en orden de prioridad central → borde
 
 const COLS = 11;
 const ROWS = 4;
+
+// ordeno las 44 celdas por cercanía al centro y les asigno los slugs en orden de prioridad
+const cells: { c: number; r: number; d: number }[] = [];
+for (let c = 0; c < COLS; c++) {
+  for (let r = 0; r < ROWS; r++) {
+    const d = Math.abs(c - (COLS - 1) / 2) / ((COLS - 1) / 2) + Math.abs(r - (ROWS - 1) / 2) / ((ROWS - 1) / 2);
+    cells.push({ c, r, d });
+  }
+}
+const byCenter = [...cells].sort((a, b) => a.d - b.d);
+const at: Record<string, string> = {};
+byCenter.forEach((cell, i) => {
+  at[`${cell.c}-${cell.r}`] = ordered[i];
+});
 const grid = Array.from({ length: COLS }, (_, c) =>
-  Array.from({ length: ROWS }, (_, r) => order[c * ROWS + r])
+  Array.from({ length: ROWS }, (_, r) => at[`${c}-${r}`])
 );
 
 export default function Problem() {

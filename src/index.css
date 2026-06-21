@@ -601,18 +601,25 @@ section.block {
 
 /* problem */
 .problem {
-  background: #0c4035;
+  /* glow suave arriba + vignette abajo → da profundidad y "asienta" la tira sin cargar */
+  background: radial-gradient(125% 85% at 50% -12%, #11503f 0%, #0c4035 52%, #082a23 100%);
   color: #fff;
   position: relative;
   overflow: hidden;
+  padding: 46px 0 42px; /* compacta: poco margen arriba/abajo */
 }
+.problem .sec-head {
+  margin-bottom: 24px;
+}
+/* textura: dot-grid apenas perceptible (orden/estructura) — mucho más liviano que el blueprint,
+   deja respirar a las ilustraciones. El gradiente de .problem oscurece los bordes y los puntos se
+   funden solos abajo. */
 .problem::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: url(/blueprint.jpg) center / cover;
-  opacity: 0.28;
-  mix-blend-mode: screen;
+  background-image: radial-gradient(rgba(159, 225, 203, 0.12) 1px, transparent 1.3px);
+  background-size: 24px 24px;
   pointer-events: none;
 }
 .problem > .container {
@@ -656,7 +663,7 @@ section.block {
   line-height: 1.55;
 }
 .stat-line {
-  margin-top: 34px;
+  margin-top: 40px;
   text-align: center;
   font-size: 16px;
   color: rgba(255, 255, 255, 0.88);
@@ -664,6 +671,90 @@ section.block {
 .stat-line b {
   color: #fff;
   font-weight: 700;
+}
+
+/* barra de ilustraciones (estilo cómic) — sobre el fondo del panel, con un semi-fondo suave */
+.illus-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+  align-items: start; /* top-align: imágenes y captions arrancan a la misma altura (subs de distinto largo no mueven las imágenes) */
+}
+.illus-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+/* semi-fondo: halo de color suave detrás de cada ilustración (la "asienta" sin card dura) */
+.illus-item::before {
+  content: '';
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 0;
+  height: 82%;
+  background: radial-gradient(ellipse at 50% 55%, rgba(159, 225, 203, 0.18), transparent 68%);
+  z-index: 0;
+}
+.illus-item img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  object-position: center bottom;
+  transition: transform 0.32s var(--ease-spring);
+}
+.illus-item:hover img {
+  transform: translateY(-5px) scale(1.03);
+}
+.illus-item figcaption {
+  position: relative;
+  z-index: 1;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.illus-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Manrope';
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--teal-light);
+  opacity: 0.62;
+  margin-bottom: 8px;
+}
+/* línea-guía corta a cada lado del número → lee como índice de "tira" de cómic */
+.illus-num::before,
+.illus-num::after {
+  content: '';
+  width: 12px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+.illus-cap {
+  font-family: 'Manrope';
+  font-weight: 700;
+  font-size: 14.5px;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.25;
+}
+.illus-sub {
+  margin-top: 6px;
+  max-width: 21ch;
+  font-size: 12.5px;
+  line-height: 1.42;
+  color: rgba(159, 225, 203, 0.78);
 }
 
 /* hover lifts on the de-boxed icon sections */
@@ -1614,7 +1705,9 @@ footer .flink:hover {
   .nav-row {
     height: auto;
     min-height: 60px;
-    padding: 10px 0;
+    /* solo vertical: NO pisar el padding horizontal de .container (24px) → logo y CTA no quedan pegados al borde */
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   .brand .word {
     font-size: 26px;
@@ -1644,6 +1737,25 @@ footer .flink:hover {
   }
   .hero-shot {
     margin-top: 8px;
+  }
+  /* barra de ilustraciones → carrusel horizontal con snap en mobile */
+  .illus-bar {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 72%;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -24px;
+    padding: 0 24px 6px;
+  }
+  .illus-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .illus-item {
+    scroll-snap-align: center;
   }
 }
 @media (prefers-reduced-motion: reduce) {

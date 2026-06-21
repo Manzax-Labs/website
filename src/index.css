@@ -745,11 +745,6 @@ section.block {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s var(--ease-spring);
-}
-/* hover: zoom sutil de la foto */
-.cg-card:hover img {
-  transform: scale(1.05);
 }
 /* scrim + texto: SIEMPRE visibles (no parpadean) */
 .cg-scrim {
@@ -772,32 +767,33 @@ section.block {
   text-align: center;
   color: #fff;
 }
-/* la animación va en la OPACIDAD de la card: casi todas atenuadas, unas pocas suben a full,
-   rotando suave (spotlight escalonado por --i). Menos abrumador y nada de texto parpadeando. */
+/* periferia (cortadas / difuminadas): SIEMPRE en baja opacidad, sin animar */
 .cg-card {
-  animation: cgBreath 17s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * -0.386s);
+  opacity: 0.5;
+}
+/* solo las cards que entran COMPLETAS en el viewport hacen el "breath" (baja <-> full),
+   rotando suave (spotlight escalonado por --i). Menos abrumador y nada de texto parpadeando. */
+.cg-card.cg-complete {
+  animation: cgBreath 19s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.43s);
   will-change: opacity;
 }
+/* ventana "brillante" ancha (~35% del ciclo) → en todo momento ~30-40% de las que respiran
+   están en buena opacidad, escalonadas por --i. Decorativo, no interactivo. */
 @keyframes cgBreath {
   0%,
   100% {
     opacity: 0.5;
   }
-  8% {
+  13% {
     opacity: 1;
   }
-  16% {
+  38% {
     opacity: 1;
   }
-  26% {
+  52% {
     opacity: 0.5;
   }
-}
-/* hover: la card a full al instante */
-.cg-card:hover {
-  animation: none;
-  opacity: 1;
 }
 .cg-cap {
   display: block;
@@ -1859,8 +1855,8 @@ footer .flink:hover {
     opacity: 1 !important;
     transform: none !important;
   }
-  /* sin movimiento: todas las cards a full (no respiran) */
-  .cg-card {
+  /* sin movimiento: spotlight estático (completas a full, periferia en baja) sin respirar */
+  .cg-card.cg-complete {
     opacity: 1 !important;
   }
 }

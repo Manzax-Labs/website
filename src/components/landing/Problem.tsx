@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 // Sección "problema" como collage: grilla DERECHA (sin inclinar) de 44 foto-cards distintas que se
 // funde con el fondo crema. Caption por card SIEMPRE visible (título + una línea). Las fotos de
 // administradores (personas) van al CENTRO; las de ciudad/edificios/amenities sin personas, hacia
@@ -84,12 +86,42 @@ const grid = Array.from({ length: COLS }, (_, c) =>
 );
 
 export default function Problem() {
+  const collageRef = useRef<HTMLDivElement>(null);
+
+  // Solo las cards que entran COMPLETAS en el viewport (ni cortadas a los costados ni en la
+  // franja difuminada de arriba/abajo) hacen el "breath" de opacidad. El resto (periferia)
+  // queda siempre en baja opacidad. Se recalcula en cada resize.
+  useEffect(() => {
+    const collage = collageRef.current;
+    if (!collage) return;
+    const update = () => {
+      const cr = collage.getBoundingClientRect();
+      const clearTop = cr.top + cr.height * 0.05;
+      const clearBottom = cr.top + cr.height * 0.95;
+      collage.querySelectorAll<HTMLElement>('.cg-card').forEach((card) => {
+        const r = card.getBoundingClientRect();
+        // fracción del ÁREA de la card que está casi-toda visible (ni cortada al costado ni difuminada)
+        const hVis = Math.max(0, Math.min(r.right, cr.right) - Math.max(r.left, cr.left));
+        const vVis = Math.max(0, Math.min(r.bottom, clearBottom) - Math.max(r.top, clearTop));
+        const frac = (hVis * vVis) / (r.width * r.height);
+        card.classList.toggle('cg-complete', frac >= 0.6);
+      });
+    };
+    update();
+    const raf = requestAnimationFrame(update);
+    window.addEventListener('resize', update);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
   return (
     <section className="block problem problem-collage" aria-labelledby="prob-h">
       <h2 id="prob-h" className="sr-only">
         Esto lo conocés de memoria
       </h2>
-      <div className="collage" aria-hidden="true">
+      <div className="collage" aria-hidden="true" ref={collageRef}>
         <div className="collage-plane">
           {grid.map((col, ci) => (
             <div className="collage-col" key={ci}>

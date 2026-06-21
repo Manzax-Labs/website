@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import BrandLogo from './BrandLogo';
 
-/* El logo (.brand) queda EXACTAMENTE como estaba: isotipo + wordmark "manzax" en
-   tinta oscura. Solo se actualizaron los links y el CTA. No tocar BrandLogo.tsx. */
+/* Logo del nav: SVG oficial de marca (isotipo + wordmark). Negro por defecto (nav sólido);
+   sobre el hero transparente se invierte a blanco vía filtro CSS. */
 
 const links = [
   { label: 'Producto', href: '#producto' },
@@ -47,8 +46,7 @@ export default function Nav() {
     <header className={`nav${scrolled ? ' scrolled' : ''}`}>
       <div className="container nav-row">
         <a href="#producto" className="brand" aria-label="Manzax Consorcio — inicio">
-          <BrandLogo size={12} />
-          <span className="word">manzax</span>
+          <img src="/manzax-logo.svg" alt="Manzax" className="brand-logo" />
         </a>
         <nav className="nav-links" aria-label="Principal">
           {links.map((link) => (

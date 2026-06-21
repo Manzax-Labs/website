@@ -288,15 +288,12 @@ select:focus-visible {
   border-bottom-color: var(--line);
 }
 /* estado transparente (sobre la imagen teñida): logo + links en blanco para legibilidad */
-.brand .word,
-.brand svg rect {
-  transition: color 0.3s var(--ease), fill 0.3s var(--ease);
+.brand-logo {
+  transition: filter 0.3s var(--ease);
 }
-.nav:not(.scrolled) .brand .word {
-  color: #fff;
-}
-.nav:not(.scrolled) .brand svg rect {
-  fill: #fff;
+/* sobre el hero (nav transparente) el logo negro se invierte a blanco */
+.nav:not(.scrolled) .brand-logo {
+  filter: brightness(0) invert(1);
 }
 .nav:not(.scrolled) .nav-links a {
   color: rgba(255, 255, 255, 0.92);
@@ -322,21 +319,12 @@ select:focus-visible {
 }
 .brand {
   display: inline-flex;
-  align-items: flex-start;
-  gap: 3px;
+  align-items: center;
 }
-.brand .word {
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: -0.06em;
-  line-height: 1;
-  color: #15181c; /* locked: logo EXACTAMENTE como estaba (no usar token --ink nuevo) */
-}
-.brand svg {
-  margin-top: 4px;
-}
-.brand svg rect {
-  fill: #15181c; /* locked */
+.brand-logo {
+  height: 30px;
+  width: auto;
+  display: block;
 }
 .nav-links {
   display: flex;
@@ -1806,8 +1794,8 @@ footer .flink:hover {
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  .brand .word {
-    font-size: 26px;
+  .brand-logo {
+    height: 26px;
   }
   .nav-actions .btn {
     padding: 10px 15px;

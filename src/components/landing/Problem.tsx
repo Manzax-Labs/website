@@ -94,7 +94,12 @@ export default function Problem() {
           {grid.map((col, ci) => (
             <div className="collage-col" key={ci}>
               {col.map((slug, ri) => (
-                <figure className="cg-card has-cap" key={`${ci}-${ri}`}>
+                <figure
+                  className="cg-card has-cap"
+                  key={`${ci}-${ri}`}
+                  // --i barajado (índice * 17 mod 44) → las que se iluminan a la vez quedan dispersas
+                  style={{ ['--i' as string]: ((ci * ROWS + ri) * 17) % (COLS * ROWS) }}
+                >
                   <img src={`/photo-${slug}.webp`} alt={CAP[slug].cap} loading="lazy" decoding="async" />
                   <div className="cg-scrim" />
                   <figcaption>

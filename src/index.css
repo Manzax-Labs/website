@@ -751,7 +751,7 @@ section.block {
 .cg-card:hover img {
   transform: scale(1.05);
 }
-/* scrim + texto: SIEMPRE visibles */
+/* scrim + texto: SIEMPRE visibles (no parpadean) */
 .cg-scrim {
   position: absolute;
   inset: 0;
@@ -771,6 +771,33 @@ section.block {
   padding: 12px 13px 14px;
   text-align: center;
   color: #fff;
+}
+/* la animación va en la OPACIDAD de la card: casi todas atenuadas, unas pocas suben a full,
+   rotando suave (spotlight escalonado por --i). Menos abrumador y nada de texto parpadeando. */
+.cg-card {
+  animation: cgBreath 17s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.386s);
+  will-change: opacity;
+}
+@keyframes cgBreath {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  8% {
+    opacity: 1;
+  }
+  16% {
+    opacity: 1;
+  }
+  26% {
+    opacity: 0.5;
+  }
+}
+/* hover: la card a full al instante */
+.cg-card:hover {
+  animation: none;
+  opacity: 1;
 }
 .cg-cap {
   display: block;
@@ -1831,5 +1858,9 @@ footer .flink:hover {
   .hero-anim {
     opacity: 1 !important;
     transform: none !important;
+  }
+  /* sin movimiento: todas las cards a full (no respiran) */
+  .cg-card {
+    opacity: 1 !important;
   }
 }

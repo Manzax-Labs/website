@@ -6,7 +6,7 @@ const step = (i: number) => ({ '--i': i }) as CSSProperties;
 
 // Clips del hero (generados con Veo, CABA). Rotan con crossfade, igual que ASAPP
 // cicla varios videos de fondo. Persona-forward: arranca con la administradora.
-const CLIPS = ['/hero-pareja.mp4', '/hero-conciliacion.mp4', '/hero-asamblea.mp4', '/hero-fachada.mp4'];
+const CLIPS = ['/hero-pareja-2.mp4', '/hero-conciliacion.mp4', '/hero-asamblea.mp4', '/hero-fachada.mp4'];
 
 // En mobile NO cargamos los videos (pesados): mostramos un frame fijo del primer clip,
 // igual que ASAPP. matchMedia decide en el cliente (SPA, sin SSR → sin mismatch de hidratación).
@@ -83,7 +83,7 @@ export default function Hero() {
                 muted
                 playsInline
                 preload={i === 0 ? 'auto' : 'none'}
-                poster={i === 0 ? '/hero-poster-pareja.jpg' : undefined}
+                poster={i === 0 ? '/hero-poster-pareja-2.jpg' : undefined}
               >
                 <source src={src} type="video/mp4" />
               </video>

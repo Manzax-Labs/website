@@ -57,7 +57,7 @@ export default function Pricing() {
           <div className="price-intro">
             <div className="eyebrow">Precios</div>
             <h2 id="price-h">
-              Un precio, <span className="hl">todo incluido</span>
+              Un precio, <span className="hl dark">todo incluido</span>
             </h2>
             <p>
               Por unidad funcional. Sin costo de apertura, sin permanencia, sin sorpresas. Lo que ves

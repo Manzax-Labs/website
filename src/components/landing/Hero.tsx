@@ -70,7 +70,7 @@ export default function Hero() {
       <section className="hero hero--video" id="producto" aria-labelledby="hero-h">
         <div className="hero-media" aria-hidden="true">
           {isMobile ? (
-            <img className="hero-still" src="/hero-mobile.jpg" alt="" fetchPriority="high" />
+            <img className="hero-still" src="/hero-mobile-2.jpg" alt="" fetchPriority="high" />
           ) : (
             CLIPS.map((src, i) => (
               <video
@@ -98,7 +98,8 @@ export default function Hero() {
           </h1>
           <p className="sub hero-anim" style={step(1)}>
             Cobranzas, comprobantes y rendición de cuentas en un solo lugar, sin planillas ni vivir
-            pegado al WhatsApp. La migración de tus edificios la hacemos nosotros.
+            pegado al WhatsApp.
+            <span className="sub-extra"> La migración de tus edificios la hacemos nosotros.</span>
           </p>
           <div className="hero-cta hero-anim" style={step(2)}>
             <a href="#sumate" className="btn btn-primary btn-lg">

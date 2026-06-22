@@ -2214,7 +2214,7 @@ footer .flink:hover {
     display: none;
   }
   .hero--video .hero-media {
-    background: #0b1813 url('/hero-mobile.jpg') center / cover no-repeat;
+    background: #0b1813 url('/hero-mobile-2.jpg') center / cover no-repeat;
   }
 }
 @media (max-width: 760px) {
@@ -2230,6 +2230,10 @@ footer .flink:hover {
     font-size: 14px; /* ASAPP achica el subtítulo en mobile (~13.5px) */
     line-height: 1.5;
     max-width: 16rem; /* que tampoco llegue a la derecha (gana a la regla de desktop) */
+  }
+  /* menos carga en mobile: se oculta la última frase del subtítulo (migración) */
+  .hero--video .sub-extra {
+    display: none;
   }
   .hero--video .hero-copy {
     padding: 64px 22px 40px;
@@ -2311,4 +2315,11 @@ footer .flink:hover {
 }
 #precio .price-list li {
   color: rgba(255, 255, 255, 0.9);
+}
+
+/* pantallas chicas/cortas (iPhone SE y similares): menos carga → sin los chips */
+@media (max-width: 760px) and (max-height: 700px) {
+  .hero--video .reassure {
+    display: none;
+  }
 }

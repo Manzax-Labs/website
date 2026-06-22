@@ -2207,7 +2207,7 @@ footer .flink:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 55% center; /* imagen portrait dedicada: la administradora queda centrada */
+  object-position: center; /* imagen portrait dedicada: sujetos a la derecha, espacio a la izquierda */
 }
 @media (prefers-reduced-motion: reduce) {
   .hero--video .hero-vid {
@@ -2221,25 +2221,39 @@ footer .flink:hover {
   .hero.hero--video {
     min-height: 100vh;
     min-height: 100dvh; /* full screen real en mobile (descuenta las barras del navegador) */
-    align-items: flex-end; /* el copy va al fondo; arriba queda visible el sujeto */
-  }
-  .hero--video .hero-vid {
-    object-position: 72% center; /* el sujeto está a la derecha: conservarlo al recortar a vertical */
+    /* align-items hereda 'center' del desktop → texto centrado vertical (estilo ASAPP) */
   }
   .hero--video h1 {
     font-size: 38px;
   }
   .hero--video p.sub {
-    font-size: 14px; /* ASAPP achica el subtítulo en mobile (~13.5px); copiamos ese gesto */
+    font-size: 14px; /* ASAPP achica el subtítulo en mobile (~13.5px) */
     line-height: 1.5;
+    max-width: 16rem; /* que tampoco llegue a la derecha (gana a la regla de desktop) */
   }
   .hero--video .hero-copy {
-    padding: 0 22px 54px;
+    padding: 64px 22px 40px;
   }
+  /* el texto NO llega hasta la derecha: se queda en la izquierda y deja ver a la gente (como ASAPP) */
+  .hero--video .hero-copy > * {
+    max-width: 15rem;
+  }
+  .hero--video .reassure {
+    max-width: 17rem;
+  }
+  /* Estilo ASAPP: sujeto a la derecha, texto a la izquierda. Gradiente que oscurece FUERTE
+     la izquierda (contraste del texto) y se abre hacia la derecha (la gente se ve). + top para el nav. */
   .hero--video .hero-scrim {
     background:
-      linear-gradient(180deg, rgba(8, 20, 16, 0.55) 0%, transparent 20%),
-      linear-gradient(0deg, rgba(8, 20, 16, 0.92) 0%, rgba(8, 20, 16, 0.55) 40%, transparent 74%);
+      linear-gradient(180deg, rgba(8, 20, 16, 0.5) 0%, transparent 15%),
+      linear-gradient(
+        95deg,
+        rgba(8, 20, 16, 0.95) 0%,
+        rgba(8, 20, 16, 0.84) 28%,
+        rgba(8, 20, 16, 0.45) 56%,
+        rgba(8, 20, 16, 0.12) 80%,
+        transparent 100%
+      );
   }
 }
 
